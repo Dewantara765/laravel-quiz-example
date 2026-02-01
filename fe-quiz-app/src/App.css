@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+.active {
+    @apply bg-rose-600 font-semibold rounded p-1;
+}
+
+button:disabled {
+    @apply opacity-50 cursor-not-allowed;
+}
