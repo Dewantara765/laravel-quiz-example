@@ -32,4 +32,9 @@ class Question extends Model
         return $this->hasMany(Option::class, 'question_id', 'id_question');
     }
 
+    public function userAnswers()
+    {
+        return $this->hasMany(UserAnswer::class, 'question_id', 'id_question');
+    }
+
 }

@@ -11,6 +11,7 @@ export default function DefaultLayout() {
             
         
     const [user, setUser] = useState<User[]>([]);
+    const user_id = localStorage.getItem("user_id");
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -23,7 +24,8 @@ export default function DefaultLayout() {
                     }
                 })
                 setUser(response.data.user)
-               
+               const user_id = response.data.user.id_user;
+               localStorage.setItem("user_id", user_id);
             } catch (error) {
                 console.log(error)
             }
@@ -55,6 +57,7 @@ export default function DefaultLayout() {
                 <div className="flex gap-2 items-center">
                     <div>{user.name}</div>
                     <div onClick={logout}><button className="p-2 rounded bg-red-500">Logout</button></div>
+                    
                 </div>
                 
             </div>

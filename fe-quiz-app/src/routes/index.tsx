@@ -12,6 +12,7 @@ import DashboardCategoryCreate from "../views/dashboard/category/create";
 import DashboardCategoryEdit from "../views/dashboard/category/edit";
 import NotFound from "../views/notfound";
 import CategoryQuestions from "../views/question";
+import Finished from "../views/finished";
 export default function AppRoutes(){
     return (
         <Routes>
@@ -20,6 +21,7 @@ export default function AppRoutes(){
                 <Route element={<DefaultLayout />}>
                     <Route path="/" element={<Home />} />
                     <Route path="/category/:id/questions" element={<CategoryQuestions />} />
+                    <Route path="/category/:id/finished" element={<Finished />} />
                 </Route>
             </Route>
 

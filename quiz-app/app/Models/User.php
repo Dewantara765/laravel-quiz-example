@@ -52,4 +52,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function answers()
+    {
+        return $this->hasMany(UserAnswer::class, 'user_id', 'id_user');
+    }
+
+    public function quizResults()
+    {
+        return $this->hasMany(QuizResult::class, 'user_id', 'id_user');
+    }
 }

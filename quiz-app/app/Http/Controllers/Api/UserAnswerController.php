@@ -13,7 +13,7 @@ class UserAnswerController extends Controller
      */
     public function submit(Request $request)
     {
-        $userId = auth()->id();
+        $userId = $request->input('user_id');
 
         foreach ($request->answers as $answer) {
             UserAnswer::updateOrCreate(

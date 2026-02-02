@@ -29,4 +29,9 @@ class Option extends Model
     {
         return $this->belongsTo(Question::class, 'question_id', 'id_question');
     }
+
+    public function userAnswers()
+    {
+        return $this->hasMany(UserAnswer::class, 'option_id', 'id_option');
+    }
 }

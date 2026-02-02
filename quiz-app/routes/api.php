@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\QuestionController;
 use App\Http\Controllers\Api\OptionController;
 use App\Http\Controllers\Api\UserAnswerController;
+use App\Http\Controllers\Api\QuizResultController;
 
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
@@ -20,7 +21,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/questions', [QuestionController::class, 'index']);
         Route::get('/questions/{question}', [QuestionController::class, 'show']);
         Route::get('/options', [OptionController::class, 'index']);
-        Route::get('quiz/submit', [UserAnswerController::class, 'submit']);
+        Route::post('/quiz/submit', [UserAnswerController::class, 'submit']);
+        Route::post('/quiz/result', [QuizResultController::class, 'submitQuiz']);
     });
     
     Route::middleware('role:admin')->group(function () {

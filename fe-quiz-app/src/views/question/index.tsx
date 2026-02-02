@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { api } from "../../services/api";
 
 export default function CategoryQuestions(){
@@ -9,6 +9,7 @@ export default function CategoryQuestions(){
     const [index, setIndex] = useState<number>(0);
     const question  = questions[index];
     const [answers, setAnswers] = useState<Record<number, number>>({});
+    const navigate = useNavigate();
 
     
 
@@ -78,6 +79,27 @@ export default function CategoryQuestions(){
     }));
     };
 
+    const handleSubmit = async () => {
+    const payload = {
+        category_id: Number(id),
+        answers: Object.entries(answers).map(
+        ([question_id, option_id]) => ({
+            question_id: Number(question_id),
+            option_id
+        })
+        ),
+        user_id: Number(localStorage.getItem("user_id"))
+    };
+
+    await api.post("/api/quiz/submit", payload, {
+        headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+        
+    });
+    navigate(`/category/${id}/finished`);
+    };
+
     return (
         <div>
             
@@ -104,8 +126,13 @@ export default function CategoryQuestions(){
                 <button className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-4`}
                 onClick={prev} disabled={index === 0}>Previous</button>
 
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-4"
                 onClick={next} disabled={index === questions.length - 1}>Next</button>
+
+                {index === questions.length -1 && (
+                    <button className="bg-yellow-500 hover:bg-yellow-700 p-2 rounded"
+                    onClick={handleSubmit}>Submit</button>
+                )}
             </>
               
             }
