@@ -33,6 +33,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/questions/{question}', [QuestionController::class, 'update']);
         Route::delete('/questions/{question}', [QuestionController::class, 'destroy']);
         Route::post('/options', [OptionController::class, 'store']);
+        Route::put('/options/{option}', [OptionController::class, 'update']);
+        Route::delete('/options/{option}', [OptionController::class, 'destroy']);
     });
     Route::post('/logout', [UserController::class, 'logout']);
 });

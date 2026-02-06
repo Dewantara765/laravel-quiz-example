@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\QuestionResource;
 use App\Http\Resources\OptionResource;
+use App\Http\Resources\CategoryResource;
 use Illuminate\Support\Facades\Validator;
 
 class QuestionController extends Controller
@@ -55,6 +56,7 @@ class QuestionController extends Controller
     {
         return response()->json([
             'question' => new QuestionResource($question),
+            'category' => new CategoryResource($question->category),
             'options' => OptionResource::collection($question->options)
         ]);
     }

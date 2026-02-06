@@ -51,6 +51,7 @@ class QuizResultController extends Controller
     return response()->json([
         'score' => $score,
         'total_benar' => $totalBenar,
+        'total_salah' => $totalSalah,
         'total_soal' => $totalSoal
     ]);
 }

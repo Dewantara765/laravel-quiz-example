@@ -52,4 +52,41 @@ class OptionController extends Controller
             'option' => new OptionResource($option),
         ]);
     }
+
+    public function update(Request $request, Option $option){
+        $validator = Validator::make($request->all(), [
+            'option_text' => 'sometimes|required|string|min:3|max:255',
+            'is_correct' => 'sometimes|required|boolean',
+            'question_id' => 'sometimes|required|exists:questions,id_question',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        if($request->has('option_text')){
+            $option->option_text = $request->option_text;
+        }
+        if($request->has('is_correct')){
+            $option->is_correct = $request->boolean('is_correct');
+        }
+        if($request->has('question_id')){
+            $option->question_id = $request->question_id;
+        }
+
+        $option->save();
+
+        return response()->json([
+            'message' => 'Option updated successfully.',
+            'option' => new OptionResource($option),
+        ]);
+    }
+
+    public function destroy(Option $option){
+        $option->delete();
+
+        return response()->json([
+            'message' => 'Option deleted successfully.',
+        ]);
+    }
 }
