@@ -6,7 +6,8 @@ export default function DashboardLayout() {
             <div className="bg-slate-500 p-3 h-screen text-white">
                 <h1>Dashboard</h1>
                 <div><NavLink to="/dashboard/" end>Home</NavLink></div> 
-                <div><NavLink to="/dashboard/category">Category</NavLink></div>           
+                <div><NavLink to="/dashboard/category">Category</NavLink></div>
+                <div><NavLink to="/dashboard/question">Question</NavLink></div>           
             </div>
             <div className="p-3">
                 <Outlet />

@@ -69,7 +69,7 @@ export default function DashboardCategoryIndex() {
                         <td className="border border-gray-300 px-4 py-2"><button className="bg-yellow-400 p-2 m-2 rounded hover:bg-yellow-500">
                             <Link to={`/dashboard/category/edit/${category.id_category}`}>Edit</Link>
                         </button>
-                         <button onClick={() => deleteCategory(category.id_category)}  className="bg-red-500 text-white p-2 rounded hover:bg-red-400">Delete</button></td>
+                        <button onClick={() => deleteCategory(category.id_category)}  className="bg-red-500 text-white p-2 rounded hover:bg-red-400">Delete</button></td>
 
                     </tr>
                 )
