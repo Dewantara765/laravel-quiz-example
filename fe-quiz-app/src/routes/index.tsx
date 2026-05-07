@@ -12,6 +12,7 @@ import DashboardCategoryCreate from "../views/dashboard/category/create";
 import DashboardCategoryEdit from "../views/dashboard/category/edit";
 import DashboardQuestionIndex from "../views/dashboard/question";
 import DashboardQuestionCreate from "../views/dashboard/question/create";
+import DashboardQuestionEdit from "../views/dashboard/question/edit";
 import NotFound from "../views/notfound";
 import CategoryQuestions from "../views/question";
 import Finished from "../views/finished";
@@ -41,6 +42,7 @@ export default function AppRoutes(){
                     <Route path="/dashboard/category/edit/:id" element={<DashboardCategoryEdit />} />
                     <Route path="/dashboard/question" element={<DashboardQuestionIndex />} />
                     <Route path="/dashboard/question/create" element={<DashboardQuestionCreate />} />
+                    <Route path="/dashboard/question/edit/:id" element={<DashboardQuestionEdit />} />
                 </Route>
             </Route>
 
