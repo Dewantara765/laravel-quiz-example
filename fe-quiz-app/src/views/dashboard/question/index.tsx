@@ -48,6 +48,9 @@ export default function DashboardQuestionIndex() {
     return (
         <div>
             <p className="text-2xl font-bold">Dashboard Question</p>
+            <button className="bg-slate-500 text-white p-2 rounded hover:bg-slate-400 my-3">
+                <Link to="/dashboard/question/create">Add Question</Link>
+            </button>
             {error && <p className="text-red-500 mb-3">{error}</p>}
             <table className="min-w-full border-collapse border border-gray-300">
                 <thead>
