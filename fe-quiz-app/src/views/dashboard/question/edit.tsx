@@ -8,6 +8,12 @@ interface Category {
     name: string
 }
 
+interface Option {
+    id_option: number
+    option_text: string
+    is_correct: boolean
+}
+
 export default function DashboardQuestionEdit() {
     const { id } = useParams()
     const navigate = useNavigate()
@@ -15,6 +21,7 @@ export default function DashboardQuestionEdit() {
     const [questionText, setQuestionText] = useState("")
     const [categoryId, setCategoryId] = useState<number | "">("")
     const [categories, setCategories] = useState<Category[]>([])
+    const [options, setOptions] = useState<Option[]>([])
 
 useEffect(() => {
     document.title = "Dashboard - Question Edit"
@@ -39,6 +46,7 @@ useEffect(() => {
         setQuestionText(questionRes.data.question.question)
         setCategoryId(questionRes.data.question.category.id_category)
         setCategories(categoriesRes.data.categories)
+        setOptions(questionRes.data.options)
     } catch (error) {
         toast.error("Failed to fetch data")
     }
@@ -125,6 +133,18 @@ return (
         Update
         </button>
     </form>
+    <p className="text-xl font-bold my-3">Options :</p>
+    {options.map((option) => (
+        <div key={option.id_option} className="flex items-center gap-3 m-1 p-3">
+        <input
+            type="text"
+            className="bg-gray-300 p-1 rounded"
+            value={option.option_text}
+            readOnly
+        />
+        {option.is_correct && <span className="text-green-500 font-bold">Correct</span>}
+        </div>
+    ))}
     </div>
 )
 }
