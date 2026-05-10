@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Option;
+use App\Models\Question;
 use App\Http\Resources\OptionResource;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,40 +19,37 @@ class OptionController extends Controller
         ]);
 
     }
+public function store(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'question_id' => 'required|exists:questions,id_question',
+        'option_text' => 'required|string|max:255',
+        'is_correct' => 'required|boolean',
+    ]);
 
-    public function store(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'option_text' => 'required|string|min:3|max:255',
-            'is_correct' => 'required|boolean',
-            'question_id' => 'required|exists:questions,id_question',
-        ]);
+    if ($validator->fails()) {
+        return response()->json($validator->errors(), 422);
+    }
 
-        if($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
+    $question = Question::withCount('options')
+        ->findOrFail($request->question_id);
 
-        $is_correct = $request->boolean('is_correct');
-
-        $option = Option::create([
-            'option_text' => $request->option_text,
-            'is_correct' => $is_correct,
-            'question_id' => $request->question_id,
-        ]);
-
-
+    if ($question->options_count >= 4) {
         return response()->json([
+            'message' => 'Question hanya boleh memiliki 4 options.'
+        ], 422);
+    }
+
+    $option = $question->options()->create([
+        'option_text' => $request->option_text,
+        'is_correct' => $request->is_correct,
+    ]);
+
+    return response()->json([
             'message' => 'Option created successfully.',
             'option' => new OptionResource($option)
         ],201);
-        
-
-    }
-
-    public function show(Option $option){
-        return response()->json([
-            'option' => new OptionResource($option),
-        ]);
-    }
+}
 
     public function update(Request $request, Option $option){
         $validator = Validator::make($request->all(), [
