@@ -6,10 +6,19 @@ export default function DashboardQuestionCreate() {
     const [questionText, setQuestionText] = useState("")
     const [categoryId, setCategoryId] = useState<number | "">("")
     const [categories, setCategories] = useState<Category[]>([])
+    const [options, setOptions] = useState([
+        { option_text: "", isCorrect: false },
+        { option_text: "", isCorrect: false },
+        { option_text: "", isCorrect: false },
+        { option_text: "", isCorrect: false }
+    ])
+
+
     interface Category {
         id_category: number,
         name: string
     }
+
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -35,7 +44,11 @@ export default function DashboardQuestionCreate() {
         try {
             const response = await api.post("/api/questions", {
                 question: questionText,
-                category_id: categoryId
+                category_id: categoryId,
+                options: options.map((option) => ({
+                    option_text: option.option_text,
+                    is_correct: option.isCorrect
+                }))
             }, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -67,6 +80,33 @@ export default function DashboardQuestionCreate() {
                         ))}
                     </select>
                 </div>
+                
+                {options.map((option, index) => (
+                    <div className="flex gap-3 m-3 p-3" key={index}>
+                        <input
+                            type="text"
+                            id={`optionText-${index}`}
+                            name={`optionText-${index}`}
+                            className="bg-gray-300 p-1 rounded"
+                            value={option.option_text}
+                            onChange={(e) => {
+                                const newOptions = [...options];
+                                newOptions[index].option_text = e.target.value;
+                                setOptions(newOptions);
+                            }}
+                        placeholder={`Option ${index + 1}`} />
+
+                        <input type="checkbox" name={`isCorrect-${index}`} className="bg-gray-300 p-1 rounded" checked={option.isCorrect} onChange={(e) => {
+                            const newOptions = [...options];
+                            newOptions[index].isCorrect = e.target.checked;
+                            setOptions(newOptions);
+                        }}/>
+                    </div>
+                ))}
+                {/* <div className="flex gap-3 m-3 p-3">
+                    <label htmlFor="isCorrect">Is Correct</label>
+                    <input type="radio" id="isCorrect" name="isCorrect" className="bg-gray-300 p-1 rounded" onChange={(e) => setOptions([...options, { option_text: options[options.length - 1].option_text, isCorrect: e.target.checked }])}/>
+                </div> */}
                 <button type="submit" className="bg-blue-500 rounded p-2 text-white">Create</button>
             </form>
         </div>
