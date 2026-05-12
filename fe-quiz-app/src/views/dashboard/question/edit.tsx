@@ -8,11 +8,6 @@ interface Category {
     name: string
 }
 
-interface Option {
-    id_option: number
-    option_text: string
-    is_correct: boolean
-}
 
 export default function DashboardQuestionEdit() {
     const { id } = useParams()
@@ -21,7 +16,12 @@ export default function DashboardQuestionEdit() {
     const [questionText, setQuestionText] = useState("")
     const [categoryId, setCategoryId] = useState<number | "">("")
     const [categories, setCategories] = useState<Category[]>([])
-    const [options, setOptions] = useState<Option[]>([])
+    const [options, setOptions] = useState([
+        {option_text: "", is_correct: false},
+        {option_text: "", is_correct: false},
+        {option_text: "", is_correct: false},
+        {option_text: "", is_correct: false}
+    ])
 
 useEffect(() => {
     document.title = "Dashboard - Question Edit"
@@ -69,6 +69,10 @@ const submit = async (e: React.FormEvent<HTMLFormElement>) => {
         {
         question: questionText,
         category_id: categoryId,
+        options: options.map((option) => ({
+            option_text: option.option_text,
+            is_correct: option.is_correct,
+        })),
         },
         {
         headers: {
@@ -125,6 +129,27 @@ return (
             ))}
         </select>
         </div>
+        {options.map((option, index) => (
+                    <div className="flex gap-3 m-3 p-3" key={index}>
+                        <input
+                            type="text"
+                            id={`optionText-${index}`}
+                            name={`optionText-${index}`}
+                            className="bg-gray-300 p-1 rounded"
+                            value={option.option_text}
+                            onChange={(e) => {
+                                const newOptions = [...options];
+                                newOptions[index].option_text = e.target.value;
+                                setOptions(newOptions);
+                            }}
+                        placeholder={`Option ${index + 1}`} />
+
+                        <input type="checkbox" name={`isCorrect-${index}`} className="bg-gray-300 p-1 rounded" checked={option.is_correct} onChange={(e) => {
+                            const newOptions = [...options];
+                            newOptions[index].is_correct = e.target.checked;
+                            setOptions(newOptions);
+                        }}/>
+                    </div>))}
 
         <button
         type="submit"
@@ -133,18 +158,8 @@ return (
         Update
         </button>
     </form>
-    <p className="text-xl font-bold my-3">Options :</p>
-    {options.map((option) => (
-        <div key={option.id_option} className="flex items-center gap-3 m-1 p-3">
-        <input
-            type="text"
-            className="bg-gray-300 p-1 rounded"
-            value={option.option_text}
-            readOnly
-        />
-        {option.is_correct && <span className="text-green-500 font-bold">Correct</span>}
-        </div>
-    ))}
+   
+    
     </div>
 )
 }
