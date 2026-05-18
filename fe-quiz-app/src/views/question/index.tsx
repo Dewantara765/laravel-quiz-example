@@ -39,17 +39,9 @@ export default function CategoryQuestions(){
             }
         }
 
-        // const getQuestionOptions = async () => {
-        
-        // }
-        getCategoryQuestions()
-        // getQuestionOptions()
-    },[id])
-
-    const showOptions = async (question_id: number) => {
-       
+        const getQuestionOptions = async () => {
             try {
-                const response = await api.get(`/api/questions/${question_id}`, {
+                const response = await api.get(`/api/questions/${question.id_question}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`
                     }
@@ -59,8 +51,28 @@ export default function CategoryQuestions(){
             }catch (error) {
                 console.log(error)
             }
+        }
+        getCategoryQuestions()
+        if(question){
+            getQuestionOptions()
+        }
+    },[id, question?.id_question])
+
+    // const showOptions = async (question_id: number) => {
+       
+    //         try {
+    //             const response = await api.get(`/api/questions/${question_id}`, {
+    //                 headers: {
+    //                     Authorization: `Bearer ${localStorage.getItem("token")}`
+    //                 }
+    //             })
+    //             setOptions(response.data.options)
+                
+    //         }catch (error) {
+    //             console.log(error)
+    //         }
         
-    }
+    // }
 
     const prev = () => {
         setOptions([]);
@@ -119,8 +131,7 @@ export default function CategoryQuestions(){
                         </label>
                     ))}
                 </form>
-                <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded m-4"
-                onClick={() => showOptions(question.id_question)}>Show Options</button>
+                
                 
                 
                 <button className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-4`}
